@@ -1,0 +1,66 @@
+import java.sql.Connection;
+import java.sql.*;
+
+public class DBconn {
+    
+
+    public DBconn() {
+        super();
+    }
+    
+    //?useSSL=false
+    private static final String driver="com.mysql.cj.jdbc.Driver";
+    private static final String url="jdbc:mysql://114.115.138.118:3306/userAuth";
+    private static final String username="root";
+    private static final String password="12345678";
+    
+    private static Connection conn = null;
+    Statement sta;
+    PreparedStatement prepare;
+
+    
+            
+        
+
+
+    public  Connection getConnection() throws Exception {
+        
+        Class.forName(driver);
+
+        if(conn == null || conn.isClosed()) {
+            conn = DriverManager.getConnection(url,username,password);
+            System.out.println("connect sucess!!");
+            return conn;
+        }
+        
+        return conn;
+}
+    
+    
+
+    public static void main(String[] args) throws Exception {
+        Connection conn = null ;
+        Statement state = null;
+        ResultSet rs = null;
+        DBconn dbc = new DBconn();
+        try {
+            conn =dbc.getConnection();
+            if(conn != null)
+                System.out.println("connect sucess!!");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        
+        String sql = "select * from person ";
+        try {
+            state = conn.createStatement();
+            rs = state.executeQuery(sql);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        while(rs.next()) {
+            System.out.println(rs.getString(2));
+        }
+        
+    }
+}
